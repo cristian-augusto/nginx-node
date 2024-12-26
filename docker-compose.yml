@@ -5,6 +5,7 @@ services:
     build:
       context: ./app
     container_name: node_app
+    entrypoint: dockerize -wait tcp://db:3306 -timeout 20s sh -c "npm run start"
     ports:
       - "3000:3000"
     environment:
@@ -14,6 +15,8 @@ services:
       - DB_NAME=node_db
     depends_on:
       - db
+    volumes:
+      - ./app:/app
 
   db:
     image: mysql:8.0
